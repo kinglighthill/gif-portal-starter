@@ -202,10 +202,9 @@ const App = () => {
     if (walletAddress) {
       console.log('Fetching GIF list...')
 
-      getGifList()
-      // setGifList(TEST_GIFS)
+      await getGifList()
     }
-  }, [])
+  }, [walletAddress])
 
   return (
     <div className="App">
