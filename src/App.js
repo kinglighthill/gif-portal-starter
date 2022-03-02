@@ -198,7 +198,7 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
+  useEffect(async() => {
     if (walletAddress) {
       console.log('Fetching GIF list...')
 
