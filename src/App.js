@@ -205,7 +205,7 @@ const App = () => {
       getGifList()
       // setGifList(TEST_GIFS)
     }
-  }, [walletAddress])
+  }, [])
 
   return (
     <div className="App">
