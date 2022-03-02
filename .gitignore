@@ -1,4 +1,2 @@
 node_modules
 .DS_STORE
-src/idl.json
-src/keypair.json

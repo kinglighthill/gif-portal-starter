@@ -9,9 +9,8 @@ import React, { useEffect, useState } from "react"
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
 import { Program, Provider, web3 } from '@project-serum/anchor'
 
-const { SystemProgram, Keypair } = web3
+const { SystemProgram } = web3
 
-// let baseAccount = Keypair.generate()
 const arr = Object.values(kp._keypair.secretKey)
 const secret = new Uint8Array(arr)
 const baseAccount = web3.Keypair.fromSecretKey(secret)
