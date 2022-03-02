@@ -198,13 +198,13 @@ const App = () => {
     }
   }
 
-  useEffect(async() => {
+  useEffect(() => {
     if (walletAddress) {
       console.log('Fetching GIF list...')
 
-      await getGifList()
+      getGifList()
     }
-  }, [walletAddress])
+  }, [walletAddress, gifList])
 
   return (
     <div className="App">
