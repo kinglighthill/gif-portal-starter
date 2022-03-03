@@ -4,7 +4,7 @@ import './App.css';
 import idl from "./idl.json"
 import kp from "./keypair.json"
 
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
 import { Program, Provider, web3 } from '@project-serum/anchor'
@@ -183,7 +183,7 @@ const App = () => {
     return () => window.removeEventListener('load', onLoad)
   }, [])
 
-  const getGifList = async () => {
+  const getGifList = useCallback(async () => {
     try {
       const provider = getProvider()
       const program = new Program(idl, programID, provider)
@@ -196,7 +196,7 @@ const App = () => {
       console.log("Error in getGifList: ", error)
       setGifList(null)
     }
-  }
+  }, [])
 
   useEffect(() => {
     if (walletAddress) {
@@ -204,7 +204,7 @@ const App = () => {
 
       getGifList()
     }
-  }, [walletAddress, gifList])
+  }, [walletAddress, getGifList])
 
   return (
     <div className="App">
