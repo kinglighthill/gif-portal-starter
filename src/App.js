@@ -9,11 +9,14 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
 import { Program, Provider, web3 } from '@project-serum/anchor'
 
-const { SystemProgram } = web3
+const { SystemProgram, Keypair } = web3
 
 const arr = Object.values(kp._keypair.secretKey)
 const secret = new Uint8Array(arr)
 const baseAccount = web3.Keypair.fromSecretKey(secret)
+
+// let baseAccount = Keypair.generate();
+
 
 const programID = new PublicKey(idl.metadata.address)
 
@@ -66,6 +69,11 @@ const App = () => {
     }
   }
 
+  const onInputChange = (event) => {
+    const { value } = event.target
+    setInputValue(value)
+  }
+
   const sendGif = async () => {
     if (inputValue.length === 0) {
       console.log("No gif link given!")
@@ -91,18 +99,63 @@ const App = () => {
     } catch(error) {
       console.log("Error sending GIF: ", error)
     }
-    // if (inputValue.length > 0) {
-    //   console.log('Gif link: ', inputValue)
-    //   setGifList([...gifList, inputValue])
-    //   setInputValue('')
-    // } else {
-    //   console.log('Empty input. Try again.')
-    // }
   }
 
-  const onInputChange = (event) => {
-    const { value } = event.target
-    setInputValue(value)
+  const upvoteGif = async (gifLink) => {
+    try {
+      const provider = getProvider()
+      const program = new Program(idl, programID, provider)
+
+      await program.rpc.upvoteGif(gifLink, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        }
+      })
+      console.log("GIF successfully upvoted: ", gifLink)
+
+      await getGifList()
+    } catch(error) {
+      console.log("Error upvoting gif: ", error)
+    }
+  }
+
+  const downvoteGif = async (gifLink) => {
+    try {
+      const provider = getProvider()
+      const program = new Program(idl, programID, provider)
+
+      await program.rpc.downvoteGif(gifLink, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        }
+      })
+      console.log("GIF successfully downvoted: ", gifLink)
+
+      await getGifList()
+    } catch(error) {
+      console.log("Error downvoting gif: ", error)
+    }
+  }
+
+  const deleteGif = async (gifLink) => {
+    try {
+      const provider = getProvider()
+      const program = new Program(idl, programID, provider)
+
+      await program.rpc.deleteGif(gifLink, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        }
+      })
+      console.log("GIF successfully deleted: ", gifLink)
+
+      await getGifList()
+    } catch(error) {
+      console.log("Error deleting gif: ", error)
+    }
   }
 
   const getProvider = () => {
@@ -165,6 +218,10 @@ const App = () => {
               gifList.map((item, index) => (
                 <div className='gif-item' key={index}>
                   <img src={item.gifLink} alt=""/>
+                  <p className='user'>Submitted by {item.userAddress.toString()}</p>
+                  <button className="secondary-button" onClick={() => upvoteGif(item.gifLink)}>Upvote {item.upvotes > 0 ? item.upvotes.toString() : ""}</button>
+                  {item.upvotes > 0 ? <button className="secondary-button" onClick={() => downvoteGif(item.gifLink)}>Downvote</button> : <></>}
+                  {/* <button className="secondary-button" onClick={() => deleteGif(item.gifLink)}>Delete</button> */}
                 </div>
               ))
             }
@@ -187,11 +244,9 @@ const App = () => {
     try {
       const provider = getProvider()
       const program = new Program(idl, programID, provider)
+      // const account = await program.account.baseAccount.fetch(baseAccount.publicKey)
       const account = await program.account.baseAccount.fetch(baseAccount.publicKey)
-      
-      console.log("Got the account ", account)
       setGifList(account.gifList)
-    
     } catch(error) {
       console.log("Error in getGifList: ", error)
       setGifList(null)

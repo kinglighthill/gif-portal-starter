@@ -65,7 +65,24 @@ body {
   background: -webkit-linear-gradient(left, #4e44ce, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
-  margin-left: 10px;
+  margin: 0 10px;
+}
+
+.secondary-button {
+  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.user {
+  margin: 10px 0;
+  padding: 8px;
+  font-size: 16px;
+  color: white;
 }
 
 .footer-container {
