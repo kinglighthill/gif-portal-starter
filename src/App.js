@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
 import { Program, Provider, web3 } from '@project-serum/anchor'
 
-const { SystemProgram, Keypair } = web3
+const { SystemProgram } = web3
 
 const arr = Object.values(kp._keypair.secretKey)
 const secret = new Uint8Array(arr)
@@ -139,24 +139,24 @@ const App = () => {
     }
   }
 
-  const deleteGif = async (gifLink) => {
-    try {
-      const provider = getProvider()
-      const program = new Program(idl, programID, provider)
+  // const deleteGif = async (gifLink) => {
+  //   try {
+  //     const provider = getProvider()
+  //     const program = new Program(idl, programID, provider)
 
-      await program.rpc.deleteGif(gifLink, {
-        accounts: {
-          baseAccount: baseAccount.publicKey,
-          user: provider.wallet.publicKey,
-        }
-      })
-      console.log("GIF successfully deleted: ", gifLink)
+  //     await program.rpc.deleteGif(gifLink, {
+  //       accounts: {
+  //         baseAccount: baseAccount.publicKey,
+  //         user: provider.wallet.publicKey,
+  //       }
+  //     })
+  //     console.log("GIF successfully deleted: ", gifLink)
 
-      await getGifList()
-    } catch(error) {
-      console.log("Error deleting gif: ", error)
-    }
-  }
+  //     await getGifList()
+  //   } catch(error) {
+  //     console.log("Error deleting gif: ", error)
+  //   }
+  // }
 
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment)
