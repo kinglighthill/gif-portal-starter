@@ -267,7 +267,7 @@ const App = () => {
         <div className="header-container">
           <p className="header">🖼 Meme GIF Portal</p>
           <p className="sub-text">
-            View your GIF collection in the metaverse ✨
+            View your Naruto GIF collection in the metaverse ✨
           </p>
           {!walletAddress && renderNotConnectContainer()}
           {walletAddress && renderConnectedContainer()}
